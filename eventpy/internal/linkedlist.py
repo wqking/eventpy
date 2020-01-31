@@ -11,6 +11,12 @@ class LinkedListNode :
         
     def setData(self, data) :
         self._data = data
+    
+    def getPrevious(self) :
+        return self._previous
+        
+    def getNext(self) :
+        return self._next
 
 # need Lock        
 class LinkedList :
@@ -24,6 +30,9 @@ class LinkedList :
         
     def getTail(self) :
         return self._tail
+        
+    def empty(self) :
+        return self._head == None
     
     def append(self, node) :
         with lockguard.LockGuard(self._lock) :
@@ -54,3 +63,17 @@ class LinkedList :
             beforeNode._previous = node
             if beforeNode == self._head :
                 self._head = node
+
+    def remove(self, node) :
+        if node._next != None :
+            node._next._previous = node._previous
+        
+        if node._previous != None :
+            node._previous._next = node._next
+            
+        if self._head == node :
+            self._head = node._next
+            
+        if self._tail == node :
+            self._tail = node._previous
+            
