@@ -9,12 +9,6 @@ class LinkedListNode :
     def getData(self) :
         return self._data
         
-    def setData(self, data) :
-        self._data = data
-    
-    def getPrevious(self) :
-        return self._previous
-        
     def getNext(self) :
         return self._next
 

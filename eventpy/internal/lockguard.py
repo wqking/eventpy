@@ -15,13 +15,3 @@ class LockGuard :
     def unlock(self) :
         self._lock.release()
 		
-class NullLocker :
-    def __init__(self, lock = None) :
-        pass
-
-    def __enter__(self) :
-        return self
-
-    def __exit__(self, type, value, traceBack) :
-        pass
-	

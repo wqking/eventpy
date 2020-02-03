@@ -74,12 +74,14 @@ class CallbackList :
     def _getNextCounter(self) :
         self._currentCounter += 1
         result = self._currentCounter
-        if result == 0 : # overflow, let's reset all nodes' counters.
+        if result <= 0 : # overflow, let's reset all nodes' counters.
             with lockguard.LockGuard(self._lock) :
                 node = self._list.getHead()
                 while node != None :
                     node.getData()._counter = 1
                     node = node.getNext()
+            if self._currentCounter < 0 :
+                self._currentCounter = 0
             self._currentCounter += 1
             result = self._currentCounter
 
