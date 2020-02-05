@@ -1,5 +1,5 @@
 from eventpy.eventdispatcher import EventDispatcher
-import eventpy.lock as lock
+import eventpy.policy as eventPolicy
 
 def test_noParams1() :
     dataList = []
@@ -126,6 +126,40 @@ def test_hasParams() :
     dataList = []
     eventDispatcher.dispatch(13, 'c', 3)
     assert dataList == [ 'c6' ]
+
+def test_hasParams_includeEvent() :
+    dataList = []
+
+    def cb1(e, s, i) :
+        dataList.append(str(e) + s + str(i + 1))
+    def cb2(e, s, i) :
+        dataList.append(str(e) + s + str(i + 2))
+    def cb3(e, s, i) :
+        dataList.append(str(e) + s + str(i + 3))
+
+    policy = eventPolicy.defaultPolicy.clone()
+    policy.argumentPassingMode = eventPolicy.argumentPassingIncludeEvent
+    eventDispatcher = EventDispatcher(policy)
+    eventDispatcher.appendListener(11, cb1)
+    eventDispatcher.appendListener(12, cb2)
+    eventDispatcher.appendListener(13, cb3)
+
+    dataList = []
+    eventDispatcher.dispatch(1)
+    eventDispatcher.dispatch(2, 'a', 5)
+    assert dataList == [ ]
+
+    dataList = []
+    eventDispatcher.dispatch(11, 'a', 1)
+    assert dataList == [ '11a2' ]
+
+    dataList = []
+    eventDispatcher.dispatch(12, 'b', 2)
+    assert dataList == [ '12b4' ]
+
+    dataList = []
+    eventDispatcher.dispatch(13, 'c', 3)
+    assert dataList == [ '13c6' ]
 
 def test_forEach() :
     def cb1() :

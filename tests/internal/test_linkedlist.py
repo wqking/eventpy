@@ -11,8 +11,8 @@ def getAllData(linkedList) :
 
 def test_empty() :
     linkedList = linkedlist.LinkedList(lock.Lock())
-    assert linkedList.getHead() == None
-    assert linkedList.getTail() == None
+    assert linkedList.getHead() is None
+    assert linkedList.getTail() is None
     
 def test_append() :
     linkedList = linkedlist.LinkedList(lock.Lock())

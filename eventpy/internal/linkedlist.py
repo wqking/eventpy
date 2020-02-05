@@ -52,17 +52,17 @@ class LinkedList :
         with lockguard.LockGuard(self._lock) :
             node._previous = beforeNode._previous
             node._next = beforeNode
-            if beforeNode._previous != None :
+            if beforeNode._previous is not None :
                 beforeNode._previous._next = node
             beforeNode._previous = node
             if beforeNode == self._head :
                 self._head = node
 
     def remove(self, node) :
-        if node._next != None :
+        if node._next is not None :
             node._next._previous = node._previous
         
-        if node._previous != None :
+        if node._previous is not None :
             node._previous._next = node._next
             
         if self._head == node :

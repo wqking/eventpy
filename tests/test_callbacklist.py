@@ -1,5 +1,5 @@
 from eventpy.callbacklist import CallbackList
-import eventpy.lock as lock
+import eventpy.policy as policy
 
 def test_noParams() :
     dataList = []
@@ -92,7 +92,7 @@ def test_forEach() :
     def cb3() :
         pass
         
-    callbackList = CallbackList(lock.NullLock)
+    callbackList = CallbackList(policy.singleThreadPolicy)
     callbackList.append(cb1)
     callbackList.append(cb2)
     callbackList.append(cb3)
