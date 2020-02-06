@@ -45,13 +45,13 @@ class EventDispatcher :
         if callableList is not None :
             callableList(*args, **kwargs)
 
-    def _dispatchIncludeEvent(self, *args, **kwargs) :
-        event = self._policy.getEvent(*args, **kwargs)
-        self.directDispatch(event, *args, **kwargs)
+    def _dispatchIncludeEvent(self, e, *args, **kwargs) :
+        event = self._policy.getEvent(e, *args, **kwargs)
+        self.directDispatch(event, e, *args, **kwargs)
 
-    def _dispatchExcludeEvent(self, *args, **kwargs) :
-        event = self._policy.getEvent(*args, **kwargs)
-        self.directDispatch(event, *args[1:], **kwargs)
+    def _dispatchExcludeEvent(self, e, *args, **kwargs) :
+        event = self._policy.getEvent(e, *args, **kwargs)
+        self.directDispatch(event, *args, **kwargs)
 
     def _getCallbackList(self, event) :
         with lockguard.LockGuard(self._eventCallbackListMapLock) :

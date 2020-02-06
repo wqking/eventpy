@@ -11,25 +11,25 @@ def test_noParams1() :
     def cb3() :
         dataList.append(3)
 
-    eventDispatcher = EventDispatcher()
-    eventDispatcher.appendListener(11, cb1)
-    eventDispatcher.appendListener(12, cb2)
-    eventDispatcher.appendListener(13, cb3)
+    dispatcher = EventDispatcher()
+    dispatcher.appendListener(11, cb1)
+    dispatcher.appendListener(12, cb2)
+    dispatcher.appendListener(13, cb3)
 
     dataList = []
-    eventDispatcher.dispatch(1)
+    dispatcher.dispatch(1)
     assert dataList == [ ]
 
     dataList = []
-    eventDispatcher.dispatch(11)
+    dispatcher.dispatch(11)
     assert dataList == [ 1 ]
 
     dataList = []
-    eventDispatcher.dispatch(12)
+    dispatcher.dispatch(12)
     assert dataList == [ 2 ]
 
     dataList = []
-    eventDispatcher.dispatch(13)
+    dispatcher.dispatch(13)
     assert dataList == [ 3 ]
 
 def test_noParams2() :
@@ -42,24 +42,24 @@ def test_noParams2() :
     def cb3() :
         dataList.append(3)
 
-    eventDispatcher = EventDispatcher()
-    eventDispatcher.appendListener(11, cb1)
-    eventDispatcher.appendListener(12, cb1)
-    eventDispatcher.appendListener(12, cb2)
-    eventDispatcher.appendListener(13, cb3)
-    eventDispatcher.appendListener(13, cb2)
-    eventDispatcher.appendListener(13, cb1)
+    dispatcher = EventDispatcher()
+    dispatcher.appendListener(11, cb1)
+    dispatcher.appendListener(12, cb1)
+    dispatcher.appendListener(12, cb2)
+    dispatcher.appendListener(13, cb3)
+    dispatcher.appendListener(13, cb2)
+    dispatcher.appendListener(13, cb1)
 
     dataList = []
-    eventDispatcher.dispatch(11)
+    dispatcher.dispatch(11)
     assert dataList == [ 1 ]
 
     dataList = []
-    eventDispatcher.dispatch(12)
+    dispatcher.dispatch(12)
     assert dataList == [ 1, 2 ]
 
     dataList = []
-    eventDispatcher.dispatch(13)
+    dispatcher.dispatch(13)
     assert dataList == [ 3, 2, 1 ]
 
 def test_noParams3() :
@@ -72,27 +72,27 @@ def test_noParams3() :
     def cb3() :
         dataList.append(3)
 
-    eventDispatcher = EventDispatcher()
-    h1 = eventDispatcher.appendListener(11, cb1)
+    dispatcher = EventDispatcher()
+    h1 = dispatcher.appendListener(11, cb1)
     dataList = []
-    eventDispatcher.dispatch(11)
+    dispatcher.dispatch(11)
     assert dataList == [ 1 ]
 
-    h2 = eventDispatcher.prependListener(11, cb2)
+    h2 = dispatcher.prependListener(11, cb2)
     dataList = []
-    eventDispatcher.dispatch(11)
+    dispatcher.dispatch(11)
     assert dataList == [ 2, 1 ]
 
-    h3 = eventDispatcher.prependListener(11, cb3)
-    eventDispatcher.removeListener(11, h2)
-    eventDispatcher.removeListener(99, h1) # invalid event, no effect
+    h3 = dispatcher.prependListener(11, cb3)
+    dispatcher.removeListener(11, h2)
+    dispatcher.removeListener(99, h1) # invalid event, no effect
     dataList = []
-    eventDispatcher.dispatch(11)
+    dispatcher.dispatch(11)
     assert dataList == [ 3, 1 ]
 
-    h2 = eventDispatcher.insertListener(11, cb2, h1)
+    h2 = dispatcher.insertListener(11, cb2, h1)
     dataList = []
-    eventDispatcher.dispatch(11)
+    dispatcher.dispatch(11)
     assert dataList == [ 3, 2, 1 ]
 
 def test_hasParams() :
@@ -105,26 +105,26 @@ def test_hasParams() :
     def cb3(s, i) :
         dataList.append(s + str(i + 3))
 
-    eventDispatcher = EventDispatcher()
-    eventDispatcher.appendListener(11, cb1)
-    eventDispatcher.appendListener(12, cb2)
-    eventDispatcher.appendListener(13, cb3)
+    dispatcher = EventDispatcher()
+    dispatcher.appendListener(11, cb1)
+    dispatcher.appendListener(12, cb2)
+    dispatcher.appendListener(13, cb3)
 
     dataList = []
-    eventDispatcher.dispatch(1)
-    eventDispatcher.dispatch(2, 'a', 5)
+    dispatcher.dispatch(1)
+    dispatcher.dispatch(2, 'a', 5)
     assert dataList == [ ]
 
     dataList = []
-    eventDispatcher.dispatch(11, 'a', 1)
+    dispatcher.dispatch(11, 'a', 1)
     assert dataList == [ 'a2' ]
 
     dataList = []
-    eventDispatcher.dispatch(12, 'b', 2)
+    dispatcher.dispatch(12, 'b', 2)
     assert dataList == [ 'b4' ]
 
     dataList = []
-    eventDispatcher.dispatch(13, 'c', 3)
+    dispatcher.dispatch(13, 'c', 3)
     assert dataList == [ 'c6' ]
 
 def test_hasParams_includeEvent() :
@@ -139,26 +139,26 @@ def test_hasParams_includeEvent() :
 
     policy = eventPolicy.defaultPolicy.clone()
     policy.argumentPassingMode = eventPolicy.argumentPassingIncludeEvent
-    eventDispatcher = EventDispatcher(policy)
-    eventDispatcher.appendListener(11, cb1)
-    eventDispatcher.appendListener(12, cb2)
-    eventDispatcher.appendListener(13, cb3)
+    dispatcher = EventDispatcher(policy)
+    dispatcher.appendListener(11, cb1)
+    dispatcher.appendListener(12, cb2)
+    dispatcher.appendListener(13, cb3)
 
     dataList = []
-    eventDispatcher.dispatch(1)
-    eventDispatcher.dispatch(2, 'a', 5)
+    dispatcher.dispatch(1)
+    dispatcher.dispatch(2, 'a', 5)
     assert dataList == [ ]
 
     dataList = []
-    eventDispatcher.dispatch(11, 'a', 1)
+    dispatcher.dispatch(11, 'a', 1)
     assert dataList == [ '11a2' ]
 
     dataList = []
-    eventDispatcher.dispatch(12, 'b', 2)
+    dispatcher.dispatch(12, 'b', 2)
     assert dataList == [ '12b4' ]
 
     dataList = []
-    eventDispatcher.dispatch(13, 'c', 3)
+    dispatcher.dispatch(13, 'c', 3)
     assert dataList == [ '13c6' ]
 
 def test_forEach() :
@@ -169,24 +169,24 @@ def test_forEach() :
     def cb3() :
         pass
 
-    eventDispatcher = EventDispatcher()
-    eventDispatcher.appendListener(11, cb1)
-    eventDispatcher.appendListener(12, cb1)
-    eventDispatcher.appendListener(12, cb2)
-    eventDispatcher.appendListener(13, cb3)
-    eventDispatcher.appendListener(13, cb2)
-    eventDispatcher.appendListener(13, cb1)
+    dispatcher = EventDispatcher()
+    dispatcher.appendListener(11, cb1)
+    dispatcher.appendListener(12, cb1)
+    dispatcher.appendListener(12, cb2)
+    dispatcher.appendListener(13, cb3)
+    dispatcher.appendListener(13, cb2)
+    dispatcher.appendListener(13, cb1)
 
     cbList = []
-    eventDispatcher.forEach(11, lambda cb : cbList.append(cb))
+    dispatcher.forEach(11, lambda cb : cbList.append(cb))
     assert cbList == [ cb1 ]
 
     cbList = []
-    eventDispatcher.forEach(12, lambda cb : cbList.append(cb))
+    dispatcher.forEach(12, lambda cb : cbList.append(cb))
     assert cbList == [ cb1, cb2 ]
 
     cbList = []
-    eventDispatcher.forEach(13, lambda cb : cbList.append(cb))
+    dispatcher.forEach(13, lambda cb : cbList.append(cb))
     assert cbList == [ cb3, cb2, cb1 ]
 
 def test_forEachIf() :
@@ -197,32 +197,32 @@ def test_forEachIf() :
     def cb3() :
         pass
         
-    eventDispatcher = EventDispatcher()
-    eventDispatcher.appendListener(11, cb1)
-    eventDispatcher.appendListener(11, cb2)
-    eventDispatcher.appendListener(11, cb3)
+    dispatcher = EventDispatcher()
+    dispatcher.appendListener(11, cb1)
+    dispatcher.appendListener(11, cb2)
+    dispatcher.appendListener(11, cb3)
     
     cbList = []
     def forEachCallback1(cb) :
         cbList.append(cb)
         return cb != cb2
-    eventDispatcher.forEachIf(11, forEachCallback1)
+    dispatcher.forEachIf(11, forEachCallback1)
     assert cbList == [ cb1, cb2 ]
     
     cbList = []
     def forEachCallback2(cb) :
         cbList.append(cb)
         return True
-    eventDispatcher.forEachIf(11, forEachCallback2)
+    dispatcher.forEachIf(11, forEachCallback2)
     assert cbList == [ cb1, cb2, cb3 ]
 
     cbList = []
     def forEachCallback3(cb) :
         cbList.append(cb)
         return False
-    eventDispatcher.forEachIf(11, forEachCallback3)
+    dispatcher.forEachIf(11, forEachCallback3)
     assert cbList == [ cb1 ]
 
     cbList = []
-    eventDispatcher.forEachIf(99, forEachCallback3)
+    dispatcher.forEachIf(99, forEachCallback3)
     assert cbList == []
