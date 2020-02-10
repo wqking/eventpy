@@ -11,18 +11,18 @@ def test_noParams1() :
     def cb3() :
         dataList.append(3)
 
-    eventQueue = EventQueue()
-    eventQueue.appendListener('hello', cb1)
-    eventQueue.appendListener('world', cb2)
-    eventQueue.appendListener('hello', cb3)
+    queue = EventQueue()
+    queue.appendListener('hello', cb1)
+    queue.appendListener('world', cb2)
+    queue.appendListener('hello', cb3)
 
     dataList = []
-    eventQueue.enqueue('hello')
+    queue.enqueue('hello')
     assert dataList == []
-    eventQueue.process()
+    queue.process()
     assert dataList == [ 1, 3 ]
     dataList = []
-    eventQueue.process()
+    queue.process()
     assert dataList == []
 
 def test_hasParams() :
@@ -35,30 +35,30 @@ def test_hasParams() :
     def cb3(s, i) :
         dataList.append(s + str(i + 3))
 
-    eventQueue = EventQueue()
-    eventQueue.appendListener(11, cb1)
-    eventQueue.appendListener(12, cb2)
-    eventQueue.appendListener(13, cb3)
+    queue = EventQueue()
+    queue.appendListener(11, cb1)
+    queue.appendListener(12, cb2)
+    queue.appendListener(13, cb3)
 
     dataList = []
-    eventQueue.enqueue(1)
-    eventQueue.enqueue(2, 'a', 5)
-    eventQueue.process()
+    queue.enqueue(1)
+    queue.enqueue(2, 'a', 5)
+    queue.process()
     assert dataList == [ ]
 
     dataList = []
-    eventQueue.enqueue(11, 'a', 1)
-    eventQueue.process()
+    queue.enqueue(11, 'a', 1)
+    queue.process()
     assert dataList == [ 'a2' ]
 
     dataList = []
-    eventQueue.enqueue(12, 'b', 2)
-    eventQueue.process()
+    queue.enqueue(12, 'b', 2)
+    queue.process()
     assert dataList == [ 'b4' ]
 
     dataList = []
-    eventQueue.enqueue(13, 'c', 3)
-    eventQueue.process()
+    queue.enqueue(13, 'c', 3)
+    queue.process()
     assert dataList == [ 'c6' ]
 
 def test_processOne() :

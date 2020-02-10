@@ -4,7 +4,7 @@ import eventpy.internal.lockguard as lockguard
 
 class EventDispatcher :
     def __init__(self, policy = eventPolicy.defaultPolicy) :
-        self._policy = policy
+        self._policy = policy.clone()
         self._eventCallbackListMapLock = self._policy.lockClass()
         self._eventCallbackListMap = {}
         if self._policy.argumentPassingMode == eventPolicy.argumentPassingExcludeEvent :

@@ -5,31 +5,31 @@ import eventpy.internal.lockguard as lockguard
 
 import time
 
+class DisableQueueNotify :
+    def __init__(self, queue) :
+        self._queue = queue
+
+    def __enter__(self) :
+        self._queue._queueNotifyCounter += 1
+        return self
+
+    def __exit__(self, type, value, traceBack) :
+        self._queue._queueNotifyCounter -= 1
+        if self._queue._doCanNotifyQueueAvailable() and not self._queue.emptyQueue() :
+            with lockguard.LockGuard(self._queue._queueListMutex) :
+                self._queue._queueListConditionVariable.notify();
+
+class QueuedEvent :
+    def __init__(self, event, args, kwargs) :
+        self.event = event
+        self.args = args
+        self.kwargs = kwargs
+
 class EventQueue(eventdispatcher.EventDispatcher) :
-    class DisableQueueNotify :
-        def __init__(self, queue) :
-            self._queue = queue
-
-        def __enter__(self) :
-            self._queue._queueNotifyCounter += 1
-            return self
-
-        def __exit__(self, type, value, traceBack) :
-            self._queue._queueNotifyCounter -= 1
-            if self._queue._doCanNotifyQueueAvailable() and not self._queue.emptyQueue() :
-                with lockguard.LockGuard(self._queue._queueListMutex) :
-                    self._queue._queueListConditionVariable.notify();
-
-    class QueuedEvent :
-        def __init__(self, event, args, kwargs) :
-            self.event = event
-            self.args = args
-            self.kwargs = kwargs
-
     def __init__(self, policy = eventPolicy.defaultPolicy) :
         super().__init__(policy)
         
-        self._policy = policy
+        self._policy = policy.clone()
         self._queueListLock = self._policy.lockClass()
         self._queueNotifyCounter = 0
         self._queueEmptyCounter = 0
@@ -41,7 +41,7 @@ class EventQueue(eventdispatcher.EventDispatcher) :
         event = self._policy.getEvent(*args, **kwargs)
         if self._policy.argumentPassingMode == eventPolicy.argumentPassingExcludeEvent :
             args = args[1:]
-        queuedEvent = EventQueue.QueuedEvent(event, args, kwargs)
+        queuedEvent = QueuedEvent(event, args, kwargs)
         with lockguard.LockGuard(self._queueListLock) :
             self._queueList.append(queuedEvent)
         if self._doCanProcess() :

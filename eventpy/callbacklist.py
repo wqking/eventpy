@@ -9,7 +9,7 @@ class CallbackList :
             self._counter = counter
 
     def __init__(self, policy = eventPolicy.defaultPolicy) :
-        self._policy = policy
+        self._policy = policy.clone()
         self._lock = self._policy.lockClass()
         self._list = linkedlist.LinkedList(self._lock)
         self._currentCounter = 0
@@ -33,8 +33,9 @@ class CallbackList :
         return node
 
     def remove(self, node) :
-        node.getData()._counter = 0
-        self._list.remove(node)
+        if node is not None :
+            node.getData()._counter = 0
+            self._list.remove(node)
         
     def forEach(self, func) :
         with lockguard.LockGuard(self._lock) :

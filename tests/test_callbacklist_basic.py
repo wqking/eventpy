@@ -226,7 +226,6 @@ class RemovalTester :
                 compareList[i] = 0
                 
         assert dataList == compareList
-        print(dataList)
 
 def test_removeInsideCallback() :
     RemovalTester(7, 3, [ 0 ]).test()
