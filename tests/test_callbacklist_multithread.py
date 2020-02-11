@@ -120,6 +120,7 @@ def test_appendDoubleRemove() :
     for i in range(itemCount) :
         def cb(i = i) :
             dataList[i] = i
+        cb.xxx = i
         taskList.append(cb)
     random.shuffle(taskList)
     

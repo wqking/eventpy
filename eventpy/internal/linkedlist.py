@@ -58,16 +58,20 @@ class LinkedList :
             if beforeNode == self._head :
                 self._head = node
 
-    def remove(self, node) :
-        if node._next is not None :
-            node._next._previous = node._previous
-        
-        if node._previous is not None :
-            node._previous._next = node._next
+    def remove(self, node, postProcess = None) :
+        with lockguard.LockGuard(self._lock) :
+            if node._next is not None :
+                node._next._previous = node._previous
             
-        if self._head == node :
-            self._head = node._next
+            if node._previous is not None :
+                node._previous._next = node._next
+                
+            if self._head == node :
+                self._head = node._next
+                
+            if self._tail == node :
+                self._tail = node._previous
             
-        if self._tail == node :
-            self._tail = node._previous
-            
+            if postProcess is not None :
+                postProcess(node)
+

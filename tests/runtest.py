@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../')
 
+from internal import test_linkedlist
 import test_callbacklist_basic
 import test_callbacklist_multithread
 import test_eventdispatcher_basic
@@ -9,6 +10,11 @@ import test_eventqueue_basic
 import test_eventqueue_multithread
 
 def doTest() :
+    test_linkedlist.test_empty()
+    test_linkedlist.test_append()
+    test_linkedlist.test_prepend()
+    test_linkedlist.test_insert()
+
     test_callbacklist_basic.test_noParams()
     test_callbacklist_basic.test_hasParams()
     test_callbacklist_basic.test_forEach()

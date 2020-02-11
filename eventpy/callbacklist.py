@@ -34,8 +34,9 @@ class CallbackList :
 
     def remove(self, node) :
         if node is not None :
-            node.getData()._counter = 0
-            self._list.remove(node)
+            def postProcess(n) :
+                n.getData()._counter = 0
+            self._list.remove(node, postProcess)
         
     def forEach(self, func) :
         with lockguard.LockGuard(self._lock) :
