@@ -5,6 +5,7 @@ class LinkedListNode :
         self._data = data
         self._previous = None
         self._next = None
+        self._list = None
         
     def getData(self) :
         return self._data
@@ -30,6 +31,12 @@ class LinkedList :
     
     def append(self, node) :
         with lockguard.LockGuard(self._lock) :
+            if node._list is not None :
+                if node._list == self :
+                    return
+                node._list.remove(node)
+            node._list = self
+
             if self._head == None :
                 self._head = node
                 self._tail = node
@@ -40,6 +47,12 @@ class LinkedList :
 
     def prepend(self, node) :
         with lockguard.LockGuard(self._lock) :
+            if node._list is not None :
+                if node._list == self :
+                    return
+                node._list.remove(node)
+            node._list = self
+
             if self._head == None :
                 self._head = node
                 self._tail = node
@@ -50,6 +63,12 @@ class LinkedList :
 
     def insert(self, node, beforeNode) :
         with lockguard.LockGuard(self._lock) :
+            if node._list is not None :
+                if node._list == self :
+                    return
+                node._list.remove(node)
+            node._list = self
+
             node._previous = beforeNode._previous
             node._next = beforeNode
             if beforeNode._previous is not None :
@@ -60,6 +79,12 @@ class LinkedList :
 
     def remove(self, node, postProcess = None) :
         with lockguard.LockGuard(self._lock) :
+            if node._list is None :
+                return
+            if node._list != self :
+                return
+            node._list = None
+
             if node._next is not None :
                 node._next._previous = node._previous
             

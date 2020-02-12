@@ -86,54 +86,60 @@ def test_hasParams() :
 
 def test_forEach() :
     def cb1() :
-        pass
+        return 1
     def cb2() :
-        pass
+        return 2
     def cb3() :
-        pass
+        return 3
         
     callbackList = CallbackList(policy.singleThreadPolicy)
     callbackList.append(cb1)
     callbackList.append(cb2)
     callbackList.append(cb3)
 
-    cbList = []
-    callbackList.forEach(lambda cb : cbList.append(cb))
-    assert cbList == [ cb1, cb2, cb3 ]
+    i = 1
+    def func1(cb) :
+        nonlocal i
+        assert cb() == i
+        i += 1
+    callbackList.forEach(func1)
+
+    i = 1
+    def func2(handle, cb) :
+        nonlocal i
+        assert cb() == i
+        i += 1
+        callbackList.remove(handle)
+    callbackList.forEach(func2)
+
+    assert callbackList.empty()
 
 def test_forEachIf() :
+    dataList = [ 0 for x in range(3) ]
     def cb1() :
-        pass
+        dataList[0] += 1
     def cb2() :
-        pass
+        dataList[1] += 2
     def cb3() :
-        pass
+        dataList[2] += 3
         
     callbackList = CallbackList()
     callbackList.append(cb1)
     callbackList.append(cb2)
     callbackList.append(cb3)
     
-    cbList = []
-    def forEachCallback1(cb) :
-        cbList.append(cb)
-        return cb != cb2
-    callbackList.forEachIf(forEachCallback1)
-    assert cbList == [ cb1, cb2 ]
+    assert dataList == [ 0, 0, 0 ]
     
-    cbList = []
-    def forEachCallback2(cb) :
-        cbList.append(cb)
-        return True
-    callbackList.forEachIf(forEachCallback2)
-    assert cbList == [ cb1, cb2, cb3 ]
-
-    cbList = []
-    def forEachCallback3(cb) :
-        cbList.append(cb)
-        return False
-    callbackList.forEachIf(forEachCallback3)
-    assert cbList == [ cb1 ]
+    i = 0
+    def func1(cb) :
+        nonlocal i
+        cb()
+        i += 1
+        return i != 2
+    result = callbackList.forEachIf(func1)
+    
+    assert not result
+    assert dataList == [ 1, 2, 0 ]
 
 def test_nestedCallbacks_newCallbacksShouldNotBeTriggered() :
     a = 0

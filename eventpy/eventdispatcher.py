@@ -1,13 +1,13 @@
-import eventpy.policy as eventPolicy
+import eventpy.policy
 import eventpy.callbacklist as callbacklist
 import eventpy.internal.lockguard as lockguard
 
 class EventDispatcher :
-    def __init__(self, policy = eventPolicy.defaultPolicy) :
+    def __init__(self, policy = eventpy.policy.defaultPolicy) :
         self._policy = policy.clone()
         self._eventCallbackListMapLock = self._policy.lockClass()
         self._eventCallbackListMap = {}
-        if self._policy.argumentPassingMode == eventPolicy.argumentPassingExcludeEvent :
+        if self._policy.argumentPassingMode == eventpy.policy.argumentPassingExcludeEvent :
             self.dispatch = self._dispatchExcludeEvent
         else :
             self.dispatch = self._dispatchIncludeEvent
@@ -45,9 +45,9 @@ class EventDispatcher :
         if callableList is not None :
             callableList(*args, **kwargs)
 
-    def _dispatchIncludeEvent(self, e, *args, **kwargs) :
-        event = self._policy.getEvent(e, *args, **kwargs)
-        self.directDispatch(event, e, *args, **kwargs)
+    def _dispatchIncludeEvent(self, *args, **kwargs) :
+        event = self._policy.getEvent(*args, **kwargs)
+        self.directDispatch(event, *args, **kwargs)
 
     def _dispatchExcludeEvent(self, e, *args, **kwargs) :
         event = self._policy.getEvent(e, *args, **kwargs)

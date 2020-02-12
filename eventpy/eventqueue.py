@@ -1,4 +1,4 @@
-import eventpy.policy as eventPolicy
+import eventpy.policy
 import eventpy.lock as lock
 import eventpy.eventdispatcher as eventdispatcher
 import eventpy.internal.lockguard as lockguard
@@ -26,7 +26,7 @@ class QueuedEvent :
         self.kwargs = kwargs
 
 class EventQueue(eventdispatcher.EventDispatcher) :
-    def __init__(self, policy = eventPolicy.defaultPolicy) :
+    def __init__(self, policy = eventpy.policy.defaultPolicy) :
         super().__init__(policy)
         
         self._policy = policy.clone()
@@ -39,7 +39,7 @@ class EventQueue(eventdispatcher.EventDispatcher) :
 
     def enqueue(self, *args, **kwargs) :
         event = self._policy.getEvent(*args, **kwargs)
-        if self._policy.argumentPassingMode == eventPolicy.argumentPassingExcludeEvent :
+        if self._policy.argumentPassingMode == eventpy.policy.argumentPassingExcludeEvent :
             args = args[1:]
         queuedEvent = QueuedEvent(event, args, kwargs)
         with lockguard.LockGuard(self._queueListLock) :

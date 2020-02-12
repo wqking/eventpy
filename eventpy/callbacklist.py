@@ -1,6 +1,8 @@
-import eventpy.policy as eventPolicy
+import eventpy.policy
 import eventpy.internal.linkedlist as linkedlist
 import eventpy.internal.lockguard as lockguard
+
+import inspect
 
 class CallbackList :
     class NodeData :
@@ -8,7 +10,7 @@ class CallbackList :
             self._callback = callback
             self._counter = counter
 
-    def __init__(self, policy = eventPolicy.defaultPolicy) :
+    def __init__(self, policy = eventpy.policy.defaultPolicy) :
         self._policy = policy.clone()
         self._lock = self._policy.lockClass()
         self._list = linkedlist.LinkedList(self._lock)
@@ -42,10 +44,11 @@ class CallbackList :
         with lockguard.LockGuard(self._lock) :
             node = self._list.getHead()
         counter = self._currentCounter
+        invoke = _selectForEachInvoke(func)
         while node is not None :
             nodeCounter = node.getData()._counter
             if nodeCounter != 0 and counter >= nodeCounter :
-                func(node.getData()._callback)
+                invoke(node)
             with lockguard.LockGuard(self._lock) :
                 node = node._next
 
@@ -53,10 +56,11 @@ class CallbackList :
         with lockguard.LockGuard(self._lock) :
             node = self._list.getHead()
         counter = self._currentCounter
+        invoke = _selectForEachInvoke(func)
         while node is not None :
             nodeCounter = node.getData()._counter
             if nodeCounter != 0 and counter >= nodeCounter :
-                if not func(node.getData()._callback) :
+                if not invoke(node) :
                     return False
             with lockguard.LockGuard(self._lock) :
                 node = node._next
@@ -88,4 +92,17 @@ class CallbackList :
             result = self._currentCounter
 
         return result
+
+def _selectForEachInvoke(func) :
+    def _forEachInvoke1(node, func = func) :
+        return func(node.getData()._callback)
+
+    def _forEachInvoke2(node, func = func) :
+        return func(node, node.getData()._callback)
+
+    sig = inspect.signature(func)
+    if len(sig.parameters) >= 2 :
+        return _forEachInvoke2
+    else :
+        return _forEachInvoke1
 
