@@ -58,24 +58,30 @@ singleThreading = Threading(
 def getEvent(*args, **kwargs) :
     return args[0]
 
+def canContinueInvoking(*args, **kwargs) :
+    return True
+
 class Policy :
     def __init__(
         self,
         threading = multipleThreading,
         getEvent = getEvent,
+        canContinueInvoking = canContinueInvoking,
         argumentPassingMode = argumentPassingExcludeEvent
     ) :
         self.threading = threading
         self.lockClass = threading.lockClass
         self.conditionClass = threading.conditionClass
         self.getEvent = getEvent
+        self.canContinueInvoking = canContinueInvoking
         self.argumentPassingMode = argumentPassingMode
         
     def clone(self) :
         return Policy(
-            self.threading,
-            self.getEvent,
-            self.argumentPassingMode
+            threading = self.threading,
+            getEvent = self.getEvent,
+            canContinueInvoking = self.canContinueInvoking,
+            argumentPassingMode = self.argumentPassingMode
         )
 
 defaultPolicy = Policy()

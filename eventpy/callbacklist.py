@@ -74,6 +74,8 @@ class CallbackList :
             nodeCounter = node.getData()._counter
             if nodeCounter != 0 and counter >= nodeCounter :
                 node.getData()._callback(*args, **kwargs)
+                if not self._policy.canContinueInvoking(*args, **kwargs) :
+                    break
             with lockguard.LockGuard(self._lock) :
                 node = node._next
 

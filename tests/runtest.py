@@ -2,6 +2,9 @@ import sys
 sys.path.append('../')
 
 from internal import test_linkedlist
+import tutorial_callbacklist
+import tutorial_eventdispatcher
+import tutorial_eventqueue
 import test_callbacklist_basic
 import test_callbacklist_multithread
 import test_eventdispatcher_basic
@@ -10,6 +13,19 @@ import test_eventqueue_basic
 import test_eventqueue_multithread
 
 def doTest() :
+    tutorial_callbacklist.test_tutorial_1_basic()
+    tutorial_callbacklist.test_tutorial_2_callbackWithParameters()
+    tutorial_callbacklist.test_tutorial_3_remove()
+    tutorial_callbacklist.test_tutorial_4_forEach()
+    
+    tutorial_eventdispatcher.test_tutorial_1_basic()
+    tutorial_eventdispatcher.test_tutorial_2_listenerWithParameters()
+    tutorial_eventdispatcher.test_tutorial_3_customizedEventClass()
+    tutorial_eventdispatcher.test_tutorial_4_eventCanceling()
+    
+    tutorial_eventqueue.test_tutorial_1_basic()
+    tutorial_eventqueue.test_tutorial_2_multipleThreading()
+
     test_linkedlist.test_empty()
     test_linkedlist.test_append()
     test_linkedlist.test_prepend()
