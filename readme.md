@@ -1,7 +1,7 @@
 # eventpy -- Python library for event dispatcher and callback list
 
 eventpy is a Python event library that provides tools that enable your application components to communicate with each other by dispatching events and listening for them. With eventpy you can easily implement signal/slot mechanism, or observer pattern.  
-This library is the Python version translated from the C++ library [eventpp](https://github.com/wqking/eventpp), both are developed by the same developer.
+This library is the Python version rewritten from the C++ library [eventpp](https://github.com/wqking/eventpp), both are developed by the same developer.
 
 ## Facts and features
 
@@ -83,7 +83,7 @@ queue.process();
 
 ## Documentations
 
-* [Overview, thread and exception safety](doc/introduction.md)
+* [Overview](doc/introduction.md)
 * [Tutorials of CallbackList](doc/tutorial_callbacklist.md)
 * [Tutorials of EventDispatcher](doc/tutorial_eventdispatcher.md)
 * [Tutorials of EventQueue](doc/tutorial_eventqueue.md)
