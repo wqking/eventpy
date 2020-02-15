@@ -7,7 +7,7 @@ with open("readme.md", "r") as fh:
 
 setuptools.setup(
     name = "eventpy",
-    version = "0.1.0",
+    version = "0.0.1",
     author = "wqking",
     author_email = "wqking@NOSPAMoutlook.com",
     description = "eventpy is a Python event library that provides tools that enable your application components to communicate with each other by dispatching events and listening for them. With eventpy you can easily implement signal/slot mechanism, or observer pattern.",

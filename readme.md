@@ -20,7 +20,7 @@ This library is the Python version rewritten from the C++ library [eventpp](http
 
 Apache License, Version 2.0  
 
-## Version 0.1.0
+## Version 0.0.1
 
 eventpy is currently usable and stable.
 
