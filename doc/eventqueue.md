@@ -1,21 +1,17 @@
 # Class EventQueue reference
 
-<a id="a2_1"></a>
 ## Description
 
 EventQueue includes all features of EventDispatcher and adds event queue features.  
 EventQueue is asynchronous. Events are cached in the queue when `EventQueue.enqueue` is called, and dispatched later when `EventQueue.process` is called.  
 EventQueue is equivalent to the event system (QEvent) in Qt, or the message processing in Windows API.  
 
-<a id="a2_2"></a>
 ## API reference
 
-<a id="a3_1"></a>
 ### Import
 
 import eventpy.eventqueue
 
-<a id="a3_4"></a>
 ### Member functions
 
 #### constructor
@@ -153,7 +149,6 @@ dispatchEvent(queuedEvent)
 ```
 Dispatch an event which was returned by `peekEvent` or `takeEvent`.  
 
-<a id="a3_5"></a>
 ### Class eventqueue.DisableQueueNotify  
 
 `eventqueue.DisableQueueNotify` is an exception safe class that temporarily prevents the event queue from waking up any waiting threads. When any `DisableQueueNotify` object exist using `with` keyword, calling `enqueue` doesn't wake up any threads that are blocked by `wait`. When the `DisableQueueNotify` object is out of scope, the waking up is resumed. If there are more than one `DisableQueueNotify` objects, the waking up is only resumed after all `DisableQueueNotify` objects are destroyed.  

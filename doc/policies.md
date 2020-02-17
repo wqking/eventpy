@@ -1,4 +1,12 @@
 # Policies
+<!--begintoc-->
+* [Introduction](#a2_1)
+* [Policies](#a2_2)
+  * [Function getEvent](#a3_1)
+  * [Function canContinueInvoking](#a3_2)
+  * [Object threading](#a3_3)
+* [Object argumentPassingMode](#a2_3)
+<!--endtoc-->
 
 <a id="a2_1"></a>
 ## Introduction
@@ -103,7 +111,7 @@ dispatcher.appendListener(3, lambda e : print("Should not get this event 3"))
 dispatcher.dispatch(MyEvent(3))
 ```
 
-<a id="a3_5"></a>
+<a id="a3_3"></a>
 ### Object threading
 
 **Default value**: `eventpy.policy.multipleThreading`.  

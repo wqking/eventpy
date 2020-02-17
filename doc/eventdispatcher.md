@@ -1,4 +1,12 @@
 # Class EventDispatcher reference
+<!--begintoc-->
+* [Description](#a2_1)
+* [API reference](#a2_2)
+  * [Import](#a3_1)
+  * [Member functions](#a3_2)
+* [Nested listener safety](#a2_3)
+* [Time complexities](#a2_4)
+<!--endtoc-->
 
 <a id="a2_1"></a>
 ## Description
@@ -15,7 +23,7 @@ EventDispatcher holds a map of `<EventType, CallbackList>` pairs. On dispatching
 
 import eventpy.eventdispatcher
 
-<a id="a3_4"></a>
+<a id="a3_2"></a>
 ### Member functions
 
 #### constructors

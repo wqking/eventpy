@@ -1,4 +1,12 @@
 # Class CallbackList reference
+<!--begintoc-->
+* [Description](#a2_1)
+* [API reference](#a2_2)
+  * [Import](#a3_1)
+  * [Member methods](#a3_2)
+* [Nested callback safety](#a2_3)
+* [Time complexities](#a2_4)
+<!--endtoc-->
 
 <a id="a2_1"></a>
 ## Description
@@ -16,7 +24,7 @@ The *callback* can be any callback target -- functions, member functions (method
 
 import eventpy.callbacklist
 
-<a id="a3_4"></a>
+<a id="a3_2"></a>
 ### Member methods
 
 #### constructor
